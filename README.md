@@ -55,7 +55,7 @@ This is a fully functional e-commerce application designed to provide users with
 
 1. Clone the repository:
     ```bash
-    git clone https://github.com/your-repository/ecommerce-app.git
+    git clone https://github.com/savanzscode/tefaXinovindo.git
     ```
 2. Navigate to the project directory:
     ```bash
@@ -99,7 +99,10 @@ This is a fully functional e-commerce application designed to provide users with
 
 ## Contributors
 
--   **Your Name** - Developer
+-   **savanzscode** - Developer
+-   **berman0** - backend
+-   **adimasaputra** - frontend
+-   **oacley** - frontend
 -   Open for contributions. Please submit a pull request.
 
 ## License
