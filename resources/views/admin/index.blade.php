@@ -232,6 +232,7 @@
                                     <td class="text-center">2</td>
                                     <td></td>
                                     <td class="text-center">
+                                        
                                         <a href="#">
                                             <div class="list-icon-function view-icon">
                                                 <div class="item eye">
