@@ -23,38 +23,38 @@
                     <i class="icon-chevron-right"></i>
                 </li>
                 <li>
-                    <div class="text-tiny">New Brand</div>
+                    <div class="text-tiny">Edit Brand</div>
                 </li>
             </ul>
         </div>
         <!-- new-category -->
         <div class="wg-box">
-            <form class="form-new-product form-style-1" action="{{ route('admin.brand.store') }}" method="POST" enctype="multipart/form-data">
+            <form class="form-new-product form-style-1" action="{{ route('admin.brand.update', ['id' => $brand->id]) }}" method="POST" enctype="multipart/form-data">
+
                 @csrf
+                @method('PUT')
+                <input type="hidden" name="id" value="{{$brand->id}}" />
                 <fieldset class="name">
                     <div class="body-title">Brand Name <span class="tf-color-1">*</span></div>
                     <input class="flex-grow" type="text" placeholder="Brand name" name="name"
-                        tabindex="0" value="{{ old('name') }}" aria-required="true" required="">
+                        tabindex="0" value="{{$brand->name}}" aria-required="true" required="">
                 </fieldset>
                 @error('name') <span class="alert alert-danger text-center">{{ $message }}</span>@enderror
                 <fieldset class="name">
                     <div class="body-title">Brand Slug <span class="tf-color-1">*</span></div>
                     <input class="flex-grow" type="text" placeholder="Brand Slug" name="slug"
-                        tabindex="0" value="{{ old('slug') }}" aria-required="true" required="">
+                        tabindex="0" value="{{$brand->slug}}" aria-required="true" required="">
                 </fieldset>
                 @error('slug') <span class="alert alert-danger text-center">{{ $message }}</span>@enderror
                 <fieldset>
                     <div class="body-title">Upload Images <span class="tf-color-1">*</span></div>
                     <div class="upload-image flex-grow">
-                        <div class="item" id="imgpreview" style="display:none;">
-                            <img src="" class="effect8" alt="Preview Image" style="max-width: 200px;">
-                        </div>
 
-
-                        <div class="item" id="imgpreview" style="display:none;">
-                            <img src="" class="effect8" alt="Preview Image" style="max-width: 200px;">
+                        @if($brand->image)
+                        <div class="item" id="imgpreview">
+                            <img src="{{asset('uploads/brands')}}/{{$brand->image}}" class="effect8" alt="">
                         </div>
-                        
+                        @endif
 
                         <div id="upload-file" class="item up-load">
                             <label class="uploadfile" for="myFile">
@@ -89,32 +89,23 @@
 @push('scripts')
 <script>
     $(function() {
-    // Preview Image
-    $("#myFile").on("change", function(e) {
-        const [file] = this.files;
-        if (file) {
-            console.log(file); // Debugging file
-            $("#imgpreview img").attr("src", URL.createObjectURL(file)); // Tampilkan gambar
-            $("#imgpreview").show(); // Tampilkan elemen preview
-        } else {
-            console.log("No file selected");
-            $("#imgpreview").hide(); // Sembunyikan preview jika tidak ada file
-        }
-    });
+        // Preview Image
+        $("#myFile").on("change", function(e) {
+            const [file] = this.files;
+            if (file) {
+                console.log(file); // Debug file
+                $("#imgpreview img").attr('src', URL.createObjectURL(file));
+                $("#imgpreview").show(); // Tampilkan preview
+            } else {
+                console.log("No file selected");
+            }
+        });
 
-    // Generate Slug dari Name
-    $("input[name='name']").on("change", function() {
-        $("input[name='slug']").val(StringToSlug($(this).val()));
+        // Generate Slug
+        $("input[name='name']").on("change", function() {
+            $("input[name='slug']").val(StringToSlug($(this).val()));
+        });
     });
-});
-
-// Fungsi untuk mengubah teks menjadi slug
-function StringToSlug(Text) {
-    return Text.toLowerCase()
-        .replace(/[^\w ]+/g, "")
-        .replace(/ +/g, "-");
-}
-);
 
     function StringToSlug(Text) {
         return Text.toLowerCase()
