@@ -86,5 +86,26 @@ public function brand_store(Request $request)
             $constraint->aspectRatio();
         })->save($destinationPath.'/'.$imageName);
     }
+
+    public function brand_delete($id)
+    {
+        $brand = Brand::find($id);
+
+        // Pastikan brand ditemukan
+        if (!$brand) {
+            return redirect()->route('admin.brands')->with('error', 'Brand not found.');
+        }
+
+        // Periksa apakah file gambar ada, lalu hapus
+        if ($brand->image && File::exists(public_path('uploads/brands/' . $brand->image))) {
+            File::delete(public_path('uploads/brands/' . $brand->image));
+        }
+
+        // Hapus data brand dari database
+        $brand->delete();
+
+        return redirect()->route('admin.brands')->with('status', 'Brand has been deleted successfully.');
+    }
+
 }
 
