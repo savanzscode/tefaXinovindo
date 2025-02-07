@@ -54,7 +54,7 @@
                         <div class="item" id="imgpreview" style="display:none;">
                             <img src="" class="effect8" alt="Preview Image" style="max-width: 200px;">
                         </div>
-                        
+
 
                         <div id="upload-file" class="item up-load">
                             <label class="uploadfile" for="myFile">
@@ -86,35 +86,26 @@
 </style>
 @endpush
 
-@push('scripts')
+@push('script')
 <script>
     $(function() {
-    // Preview Image
-    $("#myFile").on("change", function(e) {
-        const [file] = this.files;
-        if (file) {
-            console.log(file); // Debugging file
-            $("#imgpreview img").attr("src", URL.createObjectURL(file)); // Tampilkan gambar
-            $("#imgpreview").show(); // Tampilkan elemen preview
-        } else {
-            console.log("No file selected");
-            $("#imgpreview").hide(); // Sembunyikan preview jika tidak ada file
-        }
-    });
+        // Preview Image
+        $("#myFile").on("change", function(e) {
+            const [file] = this.files;
+            if (file) {
+                console.log(file); // Debug file
+                $("#imgpreview img").attr('src', URL.createObjectURL(file));
+                $("#imgpreview").show(); // Tampilkan preview
+            } else {
+                console.log("No file selected");
+            }
+        });
 
-    // Generate Slug dari Name
-    $("input[name='name']").on("change", function() {
-        $("input[name='slug']").val(StringToSlug($(this).val()));
+        // Generate Slug
+        $("input[name='name']").on("change", function() {
+            $("input[name='slug']").val(StringToSlug($(this).val()));
+        });
     });
-});
-
-// Fungsi untuk mengubah teks menjadi slug
-function StringToSlug(Text) {
-    return Text.toLowerCase()
-        .replace(/[^\w ]+/g, "")
-        .replace(/ +/g, "-");
-}
-);
 
     function StringToSlug(Text) {
         return Text.toLowerCase()

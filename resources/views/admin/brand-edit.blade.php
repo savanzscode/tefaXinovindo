@@ -86,7 +86,7 @@
 </style>
 @endpush
 
-@push('scripts')
+@push('script')
 <script>
     $(function() {
         // Preview Image
