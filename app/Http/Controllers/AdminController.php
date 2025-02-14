@@ -107,14 +107,20 @@ public function brand_store(Request $request)
         $brand->delete();
 
         return redirect()->route('admin.brands')->with('status', 'Brand has been deleted successfully.');
-    }public function categories()
+    }
+
+    public function categories()
     {
            $categories = Category::orderBy('id','DESC')->paginate(10);
            return view("admin.categories",compact('categories'));
-    }public function add_category()
+    }
+
+    public function add_category()
     {
         return view("admin.category-add");
-    }public function add_category_store(Request $request)
+    }
+
+    public function add_category_store(Request $request)
     {
         $request->validate([
             'name' => 'required',
@@ -133,7 +139,8 @@ public function brand_store(Request $request)
         $category->save();
         return redirect()->route('admin.categories')->with('status','Record has been added successfully !');
 
-    }public function GenerateCategoryThumbailImage($image, $imageName)
+    }
+    public function GenerateCategoryThumbailImage($image, $imageName)
     {
         $destinationPath = public_path('uploads/categories');
         $img = Image::read($image->path());
@@ -141,11 +148,15 @@ public function brand_store(Request $request)
         $img->resize(124,124,function($constraint){
             $constraint->aspectRatio();
         })->save($destinationPath.'/'.$imageName);
-    } public function edit_category($id)
+    }
+
+    public function edit_category($id)
     {
         $category = Category::find($id);
         return view('admin.category-edit',compact('category'));
-    }public function update_category(Request $request)
+    }
+
+    public function update_category(Request $request)
     {
         $request->validate([
             'name' => 'required',
@@ -169,7 +180,9 @@ public function brand_store(Request $request)
         }
         $category->save();
         return redirect()->route('admin.categories')->with('status','Record has been updated successfully !');
-    }public function delete_category($id)
+    }
+
+    public function delete_category($id)
     {
         $category = Category::find($id);
         if (File::exists(public_path('uploads/categories').'/'.$category->image)) {
@@ -177,11 +190,14 @@ public function brand_store(Request $request)
         }
         $category->delete();
         return redirect()->route('admin.categories')->with('status','Record has been deleted successfully !');
-    }public function products()
+    }
+
+    public function products()
     {
         $products = Product::OrderBy('created_at','DESC')->paginate(10);
         return view("admin.products",compact('products'));
     }public function add_product()
+
     {
         $categories = Category::Select('id','name')->orderBy('name')->get();
         $brands = Brand::Select('id','name')->orderBy('name')->get();
@@ -189,7 +205,9 @@ public function brand_store(Request $request)
 
 
         return view("admin.product-add",compact('categories','brands'));
-    }public function product_store(Request $request)
+    }
+
+    public function product_store(Request $request)
     {
         $request->validate([
             'name'=>'required',
@@ -273,7 +291,9 @@ public function brand_store(Request $request)
         $product->brand_id = $request->brand_id;
         $product->save();
         return redirect()->route('admin.products')->with('status','Record has been added successfully !');
-    }public function GenerateProductThumbailImage($image, $imageName)
+    }
+
+    public function GenerateProductThumbailImage($image, $imageName)
     {
         $destinationPathThumbnails = public_path('uploads/products/thumbnails');
         $destinationPath = public_path('uploads/products');
@@ -285,7 +305,9 @@ public function brand_store(Request $request)
         $img->resize(540,689,function($constraint){
             $constraint->aspectRatio();
         })->save($destinationPathThumbnails.'/'.$imageName);
-    }public function edit_product($id)
+    }
+
+    public function edit_product($id)
     {
         $product = Product::find($id);
         $categories = Category::Select('id','name')->orderBy('name')->get();
@@ -294,7 +316,8 @@ public function brand_store(Request $request)
 
 
         return view('admin.product-edit',compact('product','categories','brands'));
-    }public function update_product(Request $request)
+    }
+    public function update_product(Request $request)
     {
         $request->validate([
             'name'=>'required',
@@ -383,7 +406,8 @@ public function brand_store(Request $request)
 
         $product->save();
         return redirect()->route('admin.products')->with('status','Record has been updated successfully !');
-    }public function delete_product($id)
+    }
+    public function delete_product($id)
     {
         $product = Product::find($id);
         if(File::exists(public_path('uploads/products') . '/' . $product->image))
