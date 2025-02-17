@@ -95,11 +95,11 @@
                     </tbody>
                 </table>
                 <div class="cart-table-footer">
-                    <input class="form-control" type="text" name="coupon_code" placeholder="Coupon Code">
-                            <input class="btn-link fw-medium position-absolute top-0 end-0 h-100 px-4" type="submit" value="">
                     <form class="position-relative bg-body">
-                        <button class="btn btn-light" type="submit">CLEAR CART</button>
+                    <input class="form-control" type="text" name="coupon_code" placeholder="Coupon Code">
+                            <input class="btn-link fw-medium position-absolute top-0 end-0 h-100 px-4" type="submit" value="APPLY COUPON">
                     </form>
+                    <button class="btn btn-light" type="submit">UPDATE CART</button>
                 </div>
             </div>
             <div class="shopping-cart__totals-wrapper">
