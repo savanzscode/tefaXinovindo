@@ -91,7 +91,7 @@
                                 <span class="shopping-cart__subtotal">${{$cartItem->subTotal()}}</span>
                             </td>
                             <td>
-                                <form method="POST" action="{{ route('cart.empty', ['rowId' => $cartItem->rowId]) }}" style="display: inline;">
+                                <form method="POST" action="{{ route('cart.remove', ['rowId' => $cartItem->rowId]) }}" style="display: inline;">
                                     @csrf
                                     @method('DELETE')
                                     <button type="submit" class="remove-cart" style="border: none; background: none; cursor: pointer;">
@@ -111,7 +111,11 @@
                     <input class="form-control" type="text" name="coupon_code" placeholder="Coupon Code">
                             <input class="btn-link fw-medium position-absolute top-0 end-0 h-100 px-4" type="submit" value="APPLY COUPON">
                     </form>
-                   
+                    <form class="position-relative bg-body" method="POST" action="{{route('cart.empty')}}">
+                        @csrf
+                        @method('DELETE')
+                        <button class="btn btn-light" type="submit">CLEAR CART</button>
+                    </form>
                 </div>
             </div>
             <div class="shopping-cart__totals-wrapper">
