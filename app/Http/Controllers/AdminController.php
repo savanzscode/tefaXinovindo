@@ -407,6 +407,11 @@ public function brand_store(Request $request)
         $product->save();
         return redirect()->route('admin.products')->with('status','Record has been updated successfully !');
     }
+    public function show($id)
+{
+    $product = Product::with(['category', 'brand'])->findOrFail($id);
+    return view('admin.product-detail', compact('product'));
+}
     public function delete_product($id)
     {
         $product = Product::find($id);

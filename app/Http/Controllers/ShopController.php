@@ -13,7 +13,7 @@ class ShopController extends Controller
     {
         $size = $request->query('size', 12);
         $order = $request->query('order', -1);
-
+        $f_brands = $request->query('brands');
         $orderOptions = [
             1 => ['created_at', 'DESC'],
             2 => ['created_at', 'ASC'],
@@ -21,12 +21,17 @@ class ShopController extends Controller
             4 => ['regular_price', 'DESC']
         ];
 
-        // Ambil kolom dan arah order berdasarkan opsi yang tersedia
+
+        $brands = Brand::orderBy('name','ASC')->get();
+
         [$o_column, $o_order] = $orderOptions[$order] ?? ['id', 'DESC'];
 
-        $products = Product::orderBy($o_column, $o_order)->paginate($size);
+        $products = Product::when(!empty($f_brands), function($query) use ($f_brands) {
+            $query->whereIn('brand_id', explode(',', $f_brands));
+    })
+        ->orderBy($o_column, $o_order)->paginate($size);
 
-        return view('shop', compact('products', 'size', 'order'));
+        return view('shop', compact('products', 'size', 'order','brands','f_brands'));
     }
 
 
