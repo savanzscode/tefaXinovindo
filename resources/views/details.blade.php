@@ -1,5 +1,10 @@
 @extends('layouts.app')
 @section('content')
+<style>
+    .filled-heart{
+        color: orange;
+    }
+</style>
 <main class="pt-90">
     <div class="mb-md-1 pb-md-3"></div>
     <section class="product-single container">
@@ -120,9 +125,26 @@
                 </form>
                 @endif
                 <div class="product-single__addtolinks">
-                    <a href="#" class="menu-link menu-link_us-s add-to-wishlist"><svg width="16" height="16" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    @if(Cart::instance("wishlist")->content()->Where('id',$product->id)->count()>0)
+                    <form method="POST" action="{{route('wishlist.remove',['rowId'=>Cart::instance("wishlist")->content()->Where('id',$product->id)->first()->rowId])}}" id="frm-remove-wishlist">
+                        @csrf
+                        @method("DELETE")
+                    <a href="#" class="menu-link menu-link_us-s add-to-wishlist filled-heart" onclick="document.getElementById('frm-remove-wishlist').submit();"><svg width="16" height="16" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <use href="#icon_heart" />
+                        </svg><span>Remove from Wishlist</span></a>
+                    </form>
+                        @else
+                        <form method="POST" action="{{route('wishlist.add')}}" id="wishlist-form">
+                            @csrf
+                            <input type="hidden" name="id" value="{{$product->id}}" />
+                            <input type="hidden" name="name" value="{{$product->name}}" />
+                            <input type="hidden" name="quantity" value="1"/>
+                            <input type="hidden" name="price" value="{{$product->sale_price == '' ? $product->regular_price:$product->sale_price}}" />
+                        <a href="#" class="menu-link menu-link_us-s add-to-wishlist" onclick="document.getElementById('wishlist-form').submit();"><svg width="16" height="16" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <use href="#icon_heart" />
                         </svg><span>Add to Wishlist</span></a>
+                        </form>
+                        @endif
                     <share-button class="share-button">
                         <button class="menu-link menu-link_us-s to-share border-0 bg-transparent d-flex align-items-center">
                             <svg width="16" height="19" viewBox="0 0 16 19" fill="none" xmlns="http://www.w3.org/2000/svg">
