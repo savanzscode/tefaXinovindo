@@ -123,16 +123,19 @@ return [
         'store' => env('APP_MAINTENANCE_STORE', 'database'),
     ],
 
-    
 
-    
+
+
 
 'aliases' => [
     // ...
     'Auth' => Illuminate\Support\Facades\Auth::class,
     'Session' => Illuminate\Support\Facades\Session::class,
     'Image' => Intervention\Image\Laravel\Facades\Image::class,
+    
     // ...
 ],
+
+
 
 ];
