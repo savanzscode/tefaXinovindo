@@ -73,7 +73,7 @@
                                 </div>
                             </td>
                             <td>
-                                <span class="shopping-cart__product-price">${{$cartItem->price}}</span>
+                                <span class="shopping-cart__product-price">Rp.{{$cartItem->price}}</span>
                             </td>
                             <td>
                                 <div class="qty-control position-relative">
@@ -91,7 +91,7 @@
                                 </div>
                             </td>
                             <td>
-                                <span class="shopping-cart__subtotal">${{$cartItem->subTotal()}}</span>
+                                <span class="shopping-cart__subtotal">Rp.{{$cartItem->subTotal()}}</span>
                             </td>
                             <td>
                                 <form method="POST" action="{{ route('cart.remove', ['rowId' => $cartItem->rowId]) }}" style="display: inline;">
@@ -149,15 +149,15 @@
                             <tbody>
                                 <tr>
                                     <th>Subtotal</th>
-                                    <td>${{Cart::instance('cart')->subtotal()}}</td>
+                                    <td>Rp.{{Cart::instance('cart')->subtotal()}}</td>
                                 </tr>
                                 <tr>
                                     <th>Discount {{Session("coupon")["code"]}}</th>
-                                    <td>-${{Session("discounts")["discount"]}}</td>
+                                    <td>Rp.{{Session("discounts")["discount"]}}</td>
                                 </tr>
                                 <tr>
                                     <th>Subtotal After Discount</th>
-                                    <td>${{Session("discounts")["subtotal"]}}</td>
+                                    <td>Rp.{{Session("discounts")["subtotal"]}}</td>
                                 </tr>
                                 <tr>
                                     <th>SHIPPING</th>
@@ -165,11 +165,11 @@
                                 </tr>
                                 <tr>
                                     <th>VAT</th>
-                                    <td>${{Session("discounts")["tax"]}}</td>
+                                    <td>Rp.{{Session("discounts")["tax"]}}</td>
                                 </tr>
                                 <tr class="cart-total">
                                     <th>Total</th>
-                                    <td>${{Session("discounts")["total"]}}</td>
+                                    <td>Rp.{{Session("discounts")["total"]}}</td>
                                 </tr>
                             </tbody>
                         </table>
@@ -178,7 +178,7 @@
                             <tbody>
                                 <tr>
                                     <th>Subtotal</th>
-                                    <td>${{Cart::instance('cart')->subtotal()}}</td>
+                                    <td>Rp.{{Cart::instance('cart')->subtotal()}}</td>
                                 </tr>
                                 <tr>
                                     <th>SHIPPING</th>
@@ -186,11 +186,11 @@
                                 </tr>
                                 <tr>
                                     <th>VAT</th>
-                                    <td>${{Cart::instance('cart')->tax()}}</td>
+                                    <td>Rp.{{Cart::instance('cart')->tax()}}</td>
                                 </tr>
                                 <tr class="cart-total">
                                     <th>Total</th>
-                                    <td>${{Cart::instance('cart')->total()}}</td>
+                                    <td>Rp.{{Cart::instance('cart')->total()}}</td>
                                 </tr>
                             </tbody>
                         </table>
@@ -198,7 +198,7 @@
                     </div>
                     <div class="mobile_fixed-btn_wrapper">
                         <div class="button-wrapper container">
-                            <a href="#" class="btn btn-primary btn-checkout">PROCEED TO CHECKOUT</a>
+                            <a href="{{ route('cart.checkout') }}" class="btn btn-primary btn-checkout">PROCEED TO CHECKOUT</a>
                         </div>
                     </div>
                 </div>
