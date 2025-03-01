@@ -23,4 +23,9 @@ class Order extends Model
     {
         return $this->hasOne(Transaction::class);
     }
+
+    protected $fillable = ['payment_status', 'total', 'snap_token'];
+    protected $attributes = [
+    'payment_status' => 'belum_dibayar' // Default status
+];
 }

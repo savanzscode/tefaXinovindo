@@ -3,10 +3,13 @@
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\MidtransController;
+use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\ShopController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\WishlistController;
 use App\Http\Middleware\AuthAdmin;
+use Illuminate\Foundation\Http\Middleware\VerifyCsrfToken;
 use Illuminate\Routing\Route as RoutingRoute;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
@@ -39,14 +42,25 @@ Route::post('/wishlist/move-to-cart/{rowId}',[WishlistController::class,'move_to
 Route::get('/checkout',[CartController::class,'checkout'])->name('cart.checkout');
 Route::post('/place-order',[CartController::class,'place_order'])->name('cart.place.order');
 Route::get('/order-confirmation',[CartController::class,'confirmation'])->name('cart.confirmation');
+Route::get('/payment-success', function () {
+    return view('payment-success');
+})->name('payment.success');
 
 
+
+Route::get('/get-snap-token/{order_id}', [PaymentController::class, 'getSnapToken']);
+Route::post('/update-payment-status/{order_id}', [PaymentController::class, 'updatePaymentStatus']);
+Route::post('/midtrans-notification', [PaymentController::class, 'handleMidtransNotification'])
+    ->withoutMiddleware([VerifyCsrfToken::class]);
 
 
 Route::middleware(['auth'])->group(function(){
-    
-    Route::get('/account-dashboard', [UserController::class, 'index'])->name('user.index');
 
+    Route::get('/account-dashboard', [UserController::class, 'index'])->name('user.index');
+    Route::get('/account-orders',[UserController::class,'account_orders'])->name('user.account.orders');
+    Route::get('/account-order-detials/{order_id}',[UserController::class,'account_order_details'])->name('user.acccount.order.details');
+
+Route::put('/account-order/cancel-order',[UserController::class,'account_cancel_order'])->name('user.account_cancel_order');
 });
 
 Route::middleware(['auth', AuthAdmin::class])->group(function(){
@@ -80,4 +94,14 @@ Route::middleware(['auth', AuthAdmin::class])->group(function(){
     Route::put('/admin/coupon/update',[AdminController::class,'update_coupon'])->name('admin.coupon.update');
     Route::get('/admin/coupon/{id}/edit',[AdminController::class,'edit_coupon'])->name('admin.coupon.edit');
     Route::delete('/admin/coupon/{id}/delete',[AdminController::class,'delete_coupon'])->name('admin.coupon.delete');
+    Route::get('/admin/orders',[AdminController::class,'orders'])->name('admin.orders');
+    Route::get('/admin/order/items/{order_id}',[AdminController::class,'order_items'])->name('admin.order.items');
+    Route::put('/admin/order/update-status',[AdminController::class,'update_order_status'])->name('admin.order.status.update');
+    Route::get('/admin/slides',[AdminController::class,'slides'])->name('admin.slides');
+    Route::get('/admin/slide/add', [AdminController::class,'slide_add'])->name('admin.slide.add');
+    Route::post('/admin/slide/store', [AdminController::class,'slide_store'])->name('admin.slide.store');
+    Route::get('/admin/slide/{id}/edit', [AdminController::class,'slide_edit'])->name('admin.slide.edit');
+    Route::put('/admin/slide/update', [AdminController::class,'slide_update'])->name('admin.slide.update');
+    Route::delete('/admin/slide/{id}/delete', [AdminController::class,'slide_delete'])->name('admin.slide.delete');
+
 });

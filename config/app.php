@@ -52,7 +52,7 @@ return [
     |
     */
 
-    'url' => env('APP_URL', 'http://localhost'),
+    'url' => env('APP_URL'),
 
     /*
     |--------------------------------------------------------------------------
@@ -132,7 +132,7 @@ return [
     'Auth' => Illuminate\Support\Facades\Auth::class,
     'Session' => Illuminate\Support\Facades\Session::class,
     'Image' => Intervention\Image\Laravel\Facades\Image::class,
-    
+
     // ...
 ],
 

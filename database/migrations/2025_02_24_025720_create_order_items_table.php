@@ -19,6 +19,7 @@ return new class extends Migration
             $table->integer('quantity');
             $table->longText('options')->nullable();
             $table->boolean('rstatus')->default(false);
+            $table->enum('payment_status', ['belum_dibayar', 'sudah_dibayar' ,'pending'])->default('pending');
             $table->timestamps();
             $table->foreign('product_id')->references('id')->on('products')->onDelete('cascade');
             $table->foreign('order_id')->references('id')->on('orders')->onDelete('cascade');

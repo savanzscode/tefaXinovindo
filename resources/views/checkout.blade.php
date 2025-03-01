@@ -11,6 +11,9 @@
     }
 </style>
 
+
+
+
 <main class="pt-90">
     <div class="mb-4 pb-4"></div>
     <section class="shop-checkout container">
@@ -153,7 +156,7 @@
                                             {{$item->name}} x {{$item->qty}}
                                         </td>
                                         <td class="text-right">
-                                            ${{$item->subtotal}}
+                                            Rp.{{$item->subtotal}}
                                         </td>
                                     </tr>
                                     @endforeach
@@ -164,15 +167,15 @@
                                 <tbody>
                                     <tr>
                                         <th>Subtotal</th>
-                                        <td class="text-right">${{Cart::instance('cart')->subtotal()}}</td>
+                                        <td class="text-right">Rp.{{Cart::instance('cart')->subtotal()}}</td>
                                     </tr>
                                     <tr>
                                         <th>Discount {{Session("coupon")["code"]}}</th>
-                                        <td class="text-right">-${{Session("discounts")["discount"]}}</td>
+                                        <td class="text-right">Rp.{{Session("discounts")["discount"]}}</td>
                                     </tr>
                                     <tr>
                                         <th>Subtotal After Discount</th>
-                                        <td class="text-right">${{Session("discounts")["subtotal"]}}</td>
+                                        <td class="text-right">Rp.{{Session("discounts")["subtotal"]}}</td>
                                     </tr>
                                     <tr>
                                         <th>SHIPPING</th>
@@ -180,11 +183,11 @@
                                     </tr>
                                     <tr>
                                         <th>VAT</th>
-                                        <td class="text-right">${{Session("discounts")["tax"]}}</td>
+                                        <td class="text-right">Rp.{{Session("discounts")["tax"]}}</td>
                                     </tr>
                                     <tr class="cart-total">
                                         <th>Total</th>
-                                        <td class="text-right">${{Session("discounts")["total"]}}</td>
+                                        <td class="text-right">Rp.{{Session("discounts")["total"]}}</td>
                                     </tr>
                                 </tbody>
                             </table>
@@ -193,7 +196,7 @@
                                 <tbody>
                                     <tr>
                                         <th>SUBTOTAL</th>
-                                        <td class="text-right">${{Cart::instance('cart')->subtotal()}}</td>
+                                        <td class="text-right">Rp.{{Cart::instance('cart')->subtotal()}}</td>
                                     </tr>
                                     <tr>
                                         <th>SHIPPING</th>
@@ -201,11 +204,11 @@
                                     </tr>
                                     <tr>
                                         <th>VAT</th>
-                                        <td class="text-right">${{Cart::instance('cart')->tax()}}</td>
+                                        <td class="text-right">Rp.{{Cart::instance('cart')->tax()}}</td>
                                     </tr>
                                     <tr class="cart-total">
                                         <th>TOTAL</th>
-                                        <td class="text-right">${{Cart::instance('cart')->total()}}</td>
+                                        <td class="text-right">Rp.{{Cart::instance('cart')->total()}}</td>
                                     </tr>
                                 </tbody>
                             </table>
@@ -219,10 +222,6 @@
                                 </label>
                             </div>
                             <div class="form-check">
-                                <input class="form-check-input" type="radio" name="mode" id="mode_2" value="midtrans">
-                                <label class="form-check-label" for="mode_2">Debit or Credit Card (Midtrans)</label>
-                            </div>
-                            <div class="form-check">
                                 <input class="form-check-input form-check-input_fill" type="radio" name="mode" value="cod" checked>
                                 <label class="form-check-label" for="mode_3">
                                     Cash on delivery
@@ -232,6 +231,7 @@
                                 Your personal data will be used to process your order, support your experience throughout this website, and for other purposes described in our <a href="terms.html" target="_blank">privacy policy</a>.
                             </div>
                         </div>
+                        {{-- <button id="pay-button">Bayar Sekarang</button> --}}
                         <button type="submit" class="btn btn-primary">PLACE ORDER</button>
                     </div>
                 </div>
@@ -240,6 +240,26 @@
     </section>
 </main>
 
+{{-- <script src="https://app.sandbox.midtrans.com/snap/snap.js" data-client-key="{{ config('midtrans.client_key') }}"></script>
 
+<script>
+    document.getElementById('pay-button').onclick = function(){
+        // SnapToken acquired from previous step
+        snap.pay('{{ $order->snap_token }}', {
+          // Optional
+          onSuccess: function(result){
+            window.location.href ='{{ route('cart.confirmation'), $order->id }}';
+          },
+          // Optional
+          onPending: function(result){
+            /* You may add your own js here, this is just example */ document.getElementById('result-json').innerHTML += JSON.stringify(result, null, 2);
+          },
+          // Optional
+          onError: function(result){
+            /* You may add your own js here, this is just example */ document.getElementById('result-json').innerHTML += JSON.stringify(result, null, 2);
+          }
+        });
+    };
+</script> --}}
 
 @endsection
