@@ -9,6 +9,7 @@ use App\Http\Controllers\ShopController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\WishlistController;
 use App\Http\Middleware\AuthAdmin;
+use App\Models\User;
 use Illuminate\Foundation\Http\Middleware\VerifyCsrfToken;
 use Illuminate\Routing\Route as RoutingRoute;
 use Illuminate\Support\Facades\Auth;
@@ -39,6 +40,10 @@ Route::delete('/wishlist/remove/{rowId}',[WishlistController::class,'remove_item
 Route::delete('/wishlist/clear',[WishlistController::class,'empty_wishlist'])->name('wishlist.empty');
 Route::post('/wishlist/move-to-cart/{rowId}',[WishlistController::class,'move_to_cart'])->name('wishlist.move.to.cart');
 
+Route::get('/contact-us',[HomeController::class,'contact'])->name('contact.index');
+Route::post('/contact/store',[HomeController::class,'contact_store'])->name('contact.send');
+Route::get('/about',[HomeController::class,'about'])->name('about.index');
+
 Route::get('/checkout',[CartController::class,'checkout'])->name('cart.checkout');
 Route::post('/place-order',[CartController::class,'place_order'])->name('cart.place.order');
 Route::get('/order-confirmation',[CartController::class,'confirmation'])->name('cart.confirmation');
@@ -46,6 +51,7 @@ Route::get('/payment-success', function () {
     return view('payment-success');
 })->name('payment.success');
 
+Route::get('/search',[HomeController::class,'search'])->name('home.search');
 
 
 Route::get('/get-snap-token/{order_id}', [PaymentController::class, 'getSnapToken']);
@@ -59,8 +65,14 @@ Route::middleware(['auth'])->group(function(){
     Route::get('/account-dashboard', [UserController::class, 'index'])->name('user.index');
     Route::get('/account-orders',[UserController::class,'account_orders'])->name('user.account.orders');
     Route::get('/account-order-detials/{order_id}',[UserController::class,'account_order_details'])->name('user.acccount.order.details');
-
-Route::put('/account-order/cancel-order',[UserController::class,'account_cancel_order'])->name('user.account_cancel_order');
+    Route::put('/account-order/cancel-order',[UserController::class,'account_cancel_order'])->name('user.account_cancel_order');
+    Route::get('/account-address', [UserController::class, 'showAddress'])->name('acc.address');
+    Route::post('/account-address/store', [UserController::class, 'address_store'])->name('account.address.store');
+    Route::post('/account-address/update/{id}', [UserController::class, 'address_update'])->name('account.address.update');
+    Route::get('/account-address/edit/{id}', [UserController::class, 'address_edit'])->name('account.address.edit');
+    Route::get('/account-address/add',[UserController::class,'address_add'])->name('account.address.add');
+    Route::post('/account-detail/update', [UserController::class, 'updateProfile'])->name('account.update');
+    Route::get('/account-detail',[UserController::class,'account_updt_pw'])->name('account.details');
 });
 
 Route::middleware(['auth', AuthAdmin::class])->group(function(){
@@ -103,5 +115,16 @@ Route::middleware(['auth', AuthAdmin::class])->group(function(){
     Route::get('/admin/slide/{id}/edit', [AdminController::class,'slide_edit'])->name('admin.slide.edit');
     Route::put('/admin/slide/update', [AdminController::class,'slide_update'])->name('admin.slide.update');
     Route::delete('/admin/slide/{id}/delete', [AdminController::class,'slide_delete'])->name('admin.slide.delete');
+    Route::get('/admin/user/{id}/edit', [AdminController::class, 'admin_edit'])->name('admin.edit');
+    Route::post('/admin/user/{id}/update', [AdminController::class, 'admin_update'])->name('admin.update');
+    Route::get('/admin/users',[AdminController::class,'admin_user'])->name('admin.users');
+    Route::delete('/admin/users/delete/{id}', [AdminController::class, 'admin_delete'])->name('admin.delete');
+    Route::post('/admin/setting/update-password', [AdminController::class, 'admin_update_password'])->name('admin.update.password')->middleware('auth');
+    Route::get('/admin/setting',[AdminController::class,'admin_setting'])->name('admin.setting');
+    Route::get('/admin/contact',[AdminController::class,'contacts'])->name('admin.contacts');
+    Route::delete('/admin/contact/{id}/delete',[AdminController::class,'contact_delete'])->name('admin.contact.delete');
+    Route::get('/admin/search',[AdminController::class,'search'])->name('admin.search');
+    Route::get('/admin/contact/{id}',[AdminController::class,'show_contact'])->name('admin.show.contact');
+
 
 });
