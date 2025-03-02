@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Brand;
 use App\Models\Category;
+use App\Models\Contact;
 use App\Models\Coupon;
 use App\Models\Order;
 use App\Models\OrderItem;
@@ -13,10 +14,12 @@ use App\Models\Transaction;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 use Intervention\Image\Laravel\Facades\Image;
 use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Hash;
 
 class AdminController extends Controller
 {
@@ -55,10 +58,11 @@ class AdminController extends Controller
     $TotalOrderedAmount = collect($monthlyDatas)->sum('TotalOrderedAmount');
     $TotalDeliveredAmount = collect($monthlyDatas)->sum('TotalDeliveredAmount');
     $TotalCanceledAmount = collect($monthlyDatas)->sum('TotalCanceledAmount');
+    $users = User::where('utype', 'admin')->get();
 
-    $admin = User::where('utype', 'admin')->first();
 
-        return view('admin.index',compact('orders','dashboardDatas','AmountM','OrderedAmountM','DeliveredAmountM','CanceledAmountM','TotalAmount','TotalOrderedAmount','TotalDeliveredAmount','TotalCanceledAmount','admin'));
+
+        return view('admin.index',compact('orders','dashboardDatas','AmountM','OrderedAmountM','DeliveredAmountM','CanceledAmountM','TotalAmount','TotalOrderedAmount','TotalDeliveredAmount','TotalCanceledAmount','users'));
     }
     public function brands()
     {
@@ -675,5 +679,85 @@ public function GenerateSlideThumbailImage($image, $imageName)
         $slide->delete();
         return redirect()->route('admin.slides')->with('status', 'Slide delete successfully!');
     }
+
+    public function admin_edit($id)
+{
+    $user = User::findOrFail($id);
+    return view('admin.users-edit', compact('user'));
+}
+
+public function admin_update(Request $request, $id)
+{
+    $request->validate([
+        'name' => 'required|string|max:255',
+        'email' => 'required|email|unique:users,email,' . $id,
+        'mobile' => 'nullable|string|max:12',
+    ]);
+
+    $user = User::findOrFail($id);
+    $user->update($request->only(['name', 'email', 'mobile']));
+
+    return redirect()->route('admin.users')->with('success', 'User updated successfully');
+}
+
+public function admin_user()
+{
+    $users = User::all(); // Mengambil semua user
+    return view('admin.users', compact('users'));
+}
+
+public function admin_delete($id)
+{
+    $user = User::findOrFail($id);
+    $user->delete();
+
+    return redirect()->route('admin.users')->with('success', 'User deleted successfully');
+}
+public function admin_setting(){
+    return view('admin.setting');
+}
+
+public function admin_update_password(Request $request)
+{
+    $request->validate([
+        'old_password' => 'required',
+        'new_password' => 'required|min:8|confirmed',
+    ]);
+
+    $user = Auth::user();
+
+    // Periksa apakah password lama cocok
+    if (!Hash::check($request->old_password, $user->password)) {
+        return back()->withErrors(['old_password' => 'Password lama tidak sesuai.']);
+    }
+
+    // Update password baru
+    User::where('id', $user->id)->update([
+        'password' => Hash::make($request->new_password)
+    ]);
+
+    return redirect()->back()->with('success', 'Password successfully updated!');
+
+}
+
+public function contacts(){
+    $contacts = Contact::orderBy('created_at','DESC')->paginate(10);
+    return view('admin.contacts', compact('contacts'));
+}
+
+public function contact_delete($id){
+    $contact = Contact::findOrFail($id);
+    $contact->delete();
+    return redirect()->route('admin.contacts')->with('status', 'Contact deleted successfully');
+}
+public function search(Request $request){
+    $query = $request->input('query');
+    $results = Product::where('name','LIKE',"%$query%")->get()->take(8);
+    return response()->json($results);
+}
+public function show_contact($id){
+    $contact = Contact::findOrFail($id);
+    return view('admin.show_contact', compact('contact'));
+}
 }
 
