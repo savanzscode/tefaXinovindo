@@ -75,8 +75,8 @@
                                     <div class="text-tiny mt-3">{{$product->slug}}</div>
                                 </div>
                             </td>
-                            <td>${{$product->regular_price}}</td>
-                            <td>${{$product->sale_price}}</td>
+                            <td>Rp.{{$product->regular_price}}</td>
+                            <td>Rp.{{$product->sale_price}}</td>
                             <td>{{$product->SKU}}</td>
                             <td>{{$product->category->name}}</td>
                             <td>{{$product->brand->name}}</td>

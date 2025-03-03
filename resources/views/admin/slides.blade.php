@@ -62,10 +62,10 @@
                                     <img src="{{ asset('uploads/slides') }}/{{ $slide->image }}" alt="" class="{{ $slide->title }}">
                                 </div>
                             </td>
-                            <td>{{ $slide->tagline }}</td>
-                            <td>{{ $slide->title }}</td>
-                            <td>{{ $slide->subtitle }}</td>
-                            <td>{{ $slide->link }}</td>
+                            <td style="max-width: 200px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">{{ $slide->tagline }}</td>
+                            <td style="max-width: 200px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">{{ $slide->title }}</td>
+                            <td style="max-width: 200px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">{{ $slide->subtitle }}</td>
+                            <td style="max-width: 200px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">{{ $slide->link }}</td>
                             <td>
                                 <div class="list-icon-function">
                                     <a href="{{ route('admin.slide.edit',['id'=>$slide->id]) }}">

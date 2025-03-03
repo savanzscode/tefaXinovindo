@@ -213,7 +213,7 @@ public function place_order(Request $request)
 
         // Order ID harus unik
         $transaction_details = [
-            'order_id' => $order->id,
+            'order_id' => $order->id . '-' . time(),
             'gross_amount' => (int) $order->total,
         ];
 
@@ -237,8 +237,8 @@ public function place_order(Request $request)
 
         try {
             // Mengambil Snap Token dari Midtrans
-            $snapResponse = \Midtrans\Snap::createTransaction($params);
-            $snapToken = $snapResponse->token ?? null;
+            $snapToken = \Midtrans\Snap::getSnapToken($params);
+
 
             if (!$snapToken) {
                 return response()->json(['error' => 'Failed to retrieve Snap Token'], 500);
@@ -257,7 +257,10 @@ public function place_order(Request $request)
             return redirect('https://app.sandbox.midtrans.com/snap/v2/vtweb/' . $snapToken);
 
         } catch (\Exception $e) {
-            return response()->json(['snap_token' => $snapToken,]);
+            return response()->json([
+                'error' => 'Failed to retrieve Snap Token',
+                'message' => $e->getMessage(),
+            ], 500);
         }
 
     }

@@ -33,8 +33,8 @@
                         </tr>
                         <tr><th>Name</th><td>{{ $product->name }}</td></tr>
                         <tr><th>Slug</th><td>{{ $product->slug }}</td></tr>
-                        <tr><th>Price</th><td>${{ $product->regular_price }}</td></tr>
-                        <tr><th>Sale Price</th><td>${{ $product->sale_price }}</td></tr>
+                        <tr><th>Price</th><td>Rp.{{ $product->regular_price }}</td></tr>
+                        <tr><th>Sale Price</th><td>Rp.{{ $product->sale_price }}</td></tr>
                         <tr><th>SKU</th><td>{{ $product->SKU }}</td></tr>
                         <tr><th>Category</th><td>{{ $product->category->name }}</td></tr>
                         <tr><th>Brand</th><td>{{ $product->brand->name }}</td></tr>
